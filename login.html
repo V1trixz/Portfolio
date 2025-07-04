@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portfólio V1trixz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>Portfólio V1trixz</h1>
+                <p>Acesso exclusivo para clientes</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="password">Senha de Acesso:</label>
+                    <input type="password" id="password" name="password" placeholder="Digite a senha" required>
+                </div>
+                
+                <button type="submit" class="login-button">Entrar</button>
+                
+                <div id="errorMessage" class="error-message" style="display: none;">
+                    Senha incorreta. Tente novamente.
+                </div>
+            </form>
+            
+            <div class="login-footer">
+                <p>Apenas clientes autorizados têm acesso ao portfólio.</p>
+            </div>
+        </div>
+        
+        <div class="login-background">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const correctPassword = 'Cliente-Malu-006';
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === correctPassword) {
+                // Salvar estado de login no localStorage
+                localStorage.setItem('portfolioLoggedIn', 'true');
+                localStorage.setItem('loginTime', Date.now().toString());
+                
+                // Redirecionar para o portfólio
+                window.location.href = 'index.html';
+            } else {
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // Adicionar animação de erro
+                document.querySelector('.login-box').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.login-box').classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // Verificar se já está logado
+        window.addEventListener('load', function() {
+            const isLoggedIn = localStorage.getItem('portfolioLoggedIn');
+            const loginTime = localStorage.getItem('loginTime');
+            const currentTime = Date.now();
+            const sessionDuration = 24 * 60 * 60 * 1000; // 24 horas
+
+            if (isLoggedIn === 'true' && loginTime && (currentTime - parseInt(loginTime)) < sessionDuration) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
